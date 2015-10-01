@@ -20,6 +20,13 @@ app.get('/', function (req, res) {
 /////////////////
 app.post('/tours', function(req, res) {
 
+  // Validate submitted data
+  if (new Date(req.body.time) < new Date()) {
+    return res.status(400).json({
+      error: 'Invalid paramters provided.'
+    });
+  }
+
   res.status(201).json(
     {
       id: testingID,
@@ -33,11 +40,15 @@ app.post('/tours', function(req, res) {
 /////////////////////
 app.get('/tours/:tourId', function(req, res) {
 
+  // Create an ETA set 30 minutes in the future
+  var d = new Date();
+  d.setMinutes(d.getMinutes() + 30);
+
   res.json(
     {
       id: testingID,
       status: '1',
-      eta: '2015-10-02T13:30:00.719Z'
+      eta: d.toISOString()
     }
   );
 });
