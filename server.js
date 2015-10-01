@@ -109,6 +109,21 @@ app.param('tourId', function(req, res, next, id) {
   next();
 });
 
+///////////////////
+// Error handler //
+///////////////////
+
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  next(err);
+});
+
+app.use(function(err, req, res, next) {
+  return res.status(500).send({
+    error: 'Something went wrong!'
+  });
+});
+
 var server = http.createServer(app).listen(8080, function() {
   var address = server.address();
   console.log('Mock API app listening at http://%s:%s', address.address, address.port);
