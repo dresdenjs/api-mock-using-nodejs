@@ -11,6 +11,16 @@ var testingID = 'abf0123ff';
 
 app.use(bodyParser.json());
 
+
+//////////////////////////
+// Application settings //
+//////////////////////////
+
+app.set('x-powered-by', false);
+app.disable('etag', false);
+app.enable('case sensitive routing');
+
+
 app.get('/', function (req, res) {
   res.json({ message: 'Hello World!'});
 });
