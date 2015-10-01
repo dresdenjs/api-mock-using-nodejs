@@ -83,12 +83,30 @@ app.delete('/tours/:tourId', function(req, res) {
 // Update Tour //
 /////////////////
 app.put('/tours/:tourId', function(req, res) {
+
+  // app.params contains all params
+  console.log('Updating Tour %s', req.params.tourId);
+
   res.json(
     {
       id: testingID,
       status: '1'
     }
   );
+});
+
+
+/////////////////////
+// Param callbacks //
+/////////////////////
+
+app.param('tourId', function(req, res, next, id) {
+  if (id !== testingID) {
+    return res.status(404).json({
+      error: 'Not found'
+    });
+  }
+  next();
 });
 
 var server = http.createServer(app).listen(8080, function() {
