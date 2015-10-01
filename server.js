@@ -9,9 +9,6 @@ var express = require('express'),
 
 var testingID = 'abf0123ff';
 
-app.use(bodyParser.json());
-
-
 //////////////////////////
 // Application settings //
 //////////////////////////
@@ -19,6 +16,18 @@ app.use(bodyParser.json());
 app.set('x-powered-by', false);
 app.disable('etag', false);
 app.enable('case sensitive routing');
+
+////////////////////////////
+// Application Middleware //
+////////////////////////////
+
+app.use(bodyParser.json());
+
+app.use(function (req, res, next) {
+  // Log the request
+  console.log('%s - %s', req.method, req.originalUrl);
+  next();
+});
 
 
 app.get('/', function (req, res) {
