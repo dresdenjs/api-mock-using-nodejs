@@ -1,0 +1,200 @@
+#%RAML 0.8
+---
+title: Schnittstelle zur Verwaltung von Fahrten -
+baseUri: https://beispiel-domain.de/api/{version}
+version: v1
+
+traits:
+  - basic:
+      headers:
+        Accept:
+          type: string
+          example: application/json
+      responses:
+        500:
+          description: Ein unbekannter Fehler ist aufgetreten.
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Something went wrong."
+                }
+  - validated:
+      responses:
+        409:
+          description: Wenn die Tour schon abgeschlossen ist oder anderweitig nicht mehr aktualisiert werden kann.
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "The resource that is being accessed is locked."
+                }
+
+  - picked:
+      responses:
+        404:
+          description: Eintrag wurde nicht gefunden.
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Not found."
+                }
+  - posted:
+      headers:
+        Content-Type:
+          type: string
+          example: application/json; charset=utf-8
+      responses:
+        400:
+          description: Es wurden ungültige oder unpassende Parameter übermittelt.
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Invalid paramters provided."
+                }
+
+/tours:
+  displayName: Fahrten
+  description: |
+    Interface zur Verwaltung von Fahrten.
+  post:
+    is: [ basic, posted ]
+    description: |
+      Fahrt anlegen.
+    body:
+      application/json:
+        example: |
+          {
+            "passengers": "8",
+            "time": "2015-10-02T13:30:00.719Z",
+            "start": {
+              "longitude": 13.741274,
+              "latitude": 51.060584,
+              "address": {
+                "street": "Rähnitzgasse",
+                "houseNumber": "25",
+                "zip": "01097",
+                "city": "Dresden"
+              }
+            },
+            "end": {
+              "longitude": 13.758740,
+              "latitude": 51.067590,
+              "address": {
+                "street": "Kamenzer Straße",
+                "houseNumber": "30B",
+                "zip": "01099",
+                "city": "Dresden"
+              }
+            },
+          }
+
+    responses:
+      201:
+        description: Im Erfolgsfall liefert der Service die spezifischen Informationen zur eben erzeugten Fahrt zurück.
+        body:
+          application/json:
+            example: |
+                {
+                  "id": "abf0123ff",
+                  "status": "1"
+                }
+
+  /{tourId}:
+    displayName: Bestehende Fahrten verwalten
+    description: |
+      Bestehende Fahrten verwalten
+    uriParameters:
+      tourId:
+        type: string
+        description: Die Tour ID.
+        example: A123F456
+    put:
+      is: [ basic, validated, posted ]
+      description: Update einer Fahrt.
+      body:
+        application/json:
+          example: |
+            {
+              "status": 0,
+              "duration": 960,
+              "distance": 5304,
+              "price": 20.5,
+              "passengers": "8",
+              "time": "2015-07-06T13:30:00.719Z",
+              "start": {
+                "longitude": 13.741274,
+                "latitude": 51.060584,
+                "address": {
+                  "street": "Rähnitzgasse",
+                  "houseNumber": "25",
+                  "zip": "01097",
+                  "city": "Dresden"
+                }
+              },
+              "end": {
+                "longitude": 13.758740,
+                "latitude": 51.067590,
+                "address": {
+                  "street": "Kamenzer Straße",
+                  "houseNumber": "30B",
+                  "zip": "01099",
+                  "city": "Dresden"
+                }
+              },
+            }
+
+      responses:
+        200:
+          description: Im Erfolgsfall liefert der Service die aktualisiertes Informationen zur Fahrt, wie sie im System vorliegen (soweit vorhanden) zurück.
+          body:
+            application/json:
+              example:  |
+                {
+                  "id": "abf0123ff",
+                  "status": "1"
+                }
+    get:
+      is: [ basic, picked ]
+      description: |
+        Abfrage des Tour Statuses
+      responses:
+        200:
+          description: Liefert die angefragten Informationen zur Fahrt, wie sie im System vorliegen (soweit vorhanden) zurück. Zum jetzigen Zeitpunkt können hier bereits Informationen zum voraussichtlichen Ankunftszeitpunkt, zum zugewiesenen Fahrer bzw. dem Fahrzeug und dessen Position vorliegen.
+          body:
+            application/json:
+              example: |
+                {
+                  "id": "abf0123ff",
+                  "status": "1",
+                  "eta": "2015-07-06T13:45:00.719Z",
+                  "driver":{
+                    "id": "8x8_Klaus",
+                    "phoneNumber": "017212345678"
+                  },
+                  "car" {
+                    "id": "8x8_DD-XY-1",
+                    "phoneNumber": "017212345678",
+                    "longitude": 13.741274,
+                    "latitude": 51.060584
+                  }
+                }
+
+    delete:
+      description: Fahrt stornieren
+      is: [ basic, validated, picked ]
+      responses:
+        204:
+          description: Die Fahrt wurde storniert.
+        409:
+          description: Fahrt konnte nicht storniert werden, da sie bspw. schon begonnen hat.
+          body:
+            application/json:
+              example: |
+                {
+                  "error": "Cannot cancel a tour that has already began."
+                }
+
+
