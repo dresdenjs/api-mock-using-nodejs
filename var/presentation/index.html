@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Prototypisierung von WebServices mit node.js</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(imports/Roboto.css);
+      @import url(imports/Droid.css);
+      @import url(imports/UbuntuMono.css);
+
+      body {
+        font-family: 'Droid Serif';
+        line-height: 2em;
+      }
+      h1, h2, h3 {
+        font-family: 'Roboto Slab', serif;
+        font-weight: 700;
+      }
+      .small * {
+        font-size: small !important;
+      }
+      code {
+        background-color: #f2f2f2;
+        display: block;
+        padding: .5em;
+        border-radius: 5px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 1.1em;
+      }
+      .footnote {
+        position: absolute;
+        font-size: small;
+        bottom: 3em;
+        right: 3em;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, inverse
+
+# Prototypisierung von WebServices mit node.js
+
+---
+
+# Agenda
+
+1. Hi!
+1. Warum?
+2. Zuerst
+3. Szenario
+4. Umsetzung
+5. Fazit
+
+---
+
+# Warum?
+
+- Schritt im Prozess der Entwicklung einer API
+--
+
+- Mangel einer bisherigen Umsetzung
+--
+
+- Beschleunigung der Entwicklung in Teams (Frontend/Backend)
+--
+
+- Middleware für Drittsysteme
+--
+
+- …
+
+---
+
+## Da gibt's doch Tools?
+--
+
+- [apiary.io](https://apiary.io) (API Blueprint)
+- [anypoint.mulesoft.com](https://anypoint.mulesoft.com) (RAML)
+- [market.mashape.com](https://market.mashape.com) (Web-Interface)
+- [swaggerhub.com](https://swaggerhub.com) (YAML)
+- [parse.com](https://parse.com) (Web-Interface)
+
+---
+
+## Da gibt's doch Tools?
+
+- Extrem schnelle Prototypisierung
+- Verschiedenste Features wie Dokumentation, Publikation, Protokollierung, …
+- Arbeiten in Teams
+- Skaliert
+- Personell übertragbar
+- …
+
+---
+
+## Also warum???
+
+--
+
+- Wir können alle JavaScript
+--
+
+- Keine Einschränkungen (RESTful ist für viele nur ein *buzzword*)
+--
+
+- Keine Einarbeitungszeit
+--
+
+- Wiederverwendbar
+--
+
+- Integrierbar (Middleware)
+--
+
+- …
+
+--
+
+*Es gibt auch zahlreiche Szenarios, in denen man unbeding ein Tool/Service bevorzugen sollte!*
+
+---
+
+name: voraussetzungen
+
+# Zuerst
+
+- **node.js**
+  ```
+  brew install node
+  ```
+--
+- **Initialisierung**
+  ```
+  mkdir -p ~/api-prototypes/tours && cd $_
+  npm init
+  npm install express body-parser --save
+  ```
+--
+- Irgendeine Vorstellung, **was zu tun ist!**
+
+---
+
+## Szenario
+
+- Dokumentation per **RAML** (mehr als meistens)
+--
+
+- Verwaltung von Fahrten (Taxi-Software)
+
+---
+
+## Umsetzung
+
+1. Hallo Welt
+--
+
+2. Routen definieren
+--
+
+3. Einstellungen
+--
+
+4. Middleware
+--
+
+5. Parameter callbacks
+--
+
+6. Error handler
+--
+
+7. Organisation
+
+
+---
+
+## Fazit
+
+- flexibel
+- überschaubarer Aufwand
+- überschaubare Lernkurve
+- variabel einzusetzen
+- unendlich erweiterbar über Module (middleware)
+- production ready
+- **mir gefällts!**
+
+    </textarea>
+    <script src="imports/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
